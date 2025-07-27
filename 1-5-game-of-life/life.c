@@ -131,21 +131,24 @@ int main(void) {
     char new_grid[GRID_CELLS];
     // set_grid(old_grid, DEAD);
     // set_grid(new_grid, DEAD);
-    set_grid_random(old_grid);
-    copy_grid(old_grid, new_grid);
-
     // print_grid(old_grid);
     // place_glider(old_grid, 5, 5);
+    set_grid_random(old_grid);
+    copy_grid(old_grid, new_grid);
     print_grid(old_grid);
-
     sleep(1);
+
+    char *old = old_grid;
+    char *new = new_grid;
     while(1) {
-        compute_new_state(old_grid, new_grid);
-        print_grid(new_grid);
+        compute_new_state(old, new);
+        print_grid(new);
         usleep(SPEED_MS);
-        compute_new_state(new_grid, old_grid);
-        print_grid(old_grid);
-        usleep(SPEED_MS);
+
+        // Swap pointers
+        char *tmp = old;
+        old = new;
+        new = tmp;
     }
 
     return 0;
