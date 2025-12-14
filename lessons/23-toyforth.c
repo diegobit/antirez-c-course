@@ -120,6 +120,16 @@ void freeObject(tfobj *o) {
     }
 }
 
+void retain(tfobj *o) {
+    o->refcount++;
+}
+
+void release(tfobj *o) {
+    assert (o->refcount > 0);
+    o->refcount--;
+    if (o->refcount == 0) freeObject(o);
+}
+
 void printObject(tfobj *o) {
     switch (o->type) {
         case TFOBJ_TYPE_INT:
@@ -177,6 +187,7 @@ int compareStringObject(tfobj *a, tfobj *b) {
         else return -1;
     } else {
         if (cmp < 0) return -1;
+        else if (cmp == 0) return cmp;
         else return 1;
     }
 }
